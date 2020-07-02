@@ -1,25 +1,15 @@
 import { ProvinceCases } from './map.types';
 
-export function minmax(
-  [currentMin, currentMax]: [number, number],
-  { cases }: ProvinceCases
-): [number, number] {
-  return [
-    currentMin > cases ? cases : currentMin,
-    currentMax < cases ? cases : currentMax,
-  ];
+export function max(currentMax: number, { cases }: ProvinceCases): number {
+  return currentMax < cases ? cases : currentMax;
 }
 
 export function byID(targetID): (ProvinceCases) => boolean {
   return ({ id }: ProvinceCases) => id === targetID;
 }
 
-export function calculateLightness(
-  value: number,
-  min: number,
-  max: number
-): number {
-  const normalizedValue = 1 - (value - min) / (max - min);
+export function calculateLightness(value: number, maxValue: number): number {
+  const normalizedValue = 1 - value / maxValue;
   const exponentialValue = Math.exp(normalizedValue);
   return 50 + (50 * exponentialValue) / Math.exp(1);
 }

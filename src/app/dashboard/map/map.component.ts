@@ -1,6 +1,6 @@
 import { Component, OnChanges, Input, SimpleChanges } from '@angular/core';
-import { minmax, getFirstValue, byID, calculateLightness } from './map.helpers';
-import { Province, ProvinceCases } from './map.types';
+import { max, byID, calculateLightness } from './map.helpers';
+import { Province, ProvinceCases, validHue } from './map.types';
 
 @Component({
   selector: 'app-map',
@@ -9,13 +9,10 @@ import { Province, ProvinceCases } from './map.types';
 })
 export class MapComponent implements OnChanges {
   @Input() provinces: Province[];
-
   @Input() casesInProvinces: ProvinceCases[];
+  @Input() hue: validHue = 355;
 
-  private minCases = 0;
   private maxCases = 0;
-
-  constructor() {}
 
   getColorByID(id: string): string {
     if (!this.casesInProvinces) {
@@ -23,20 +20,15 @@ export class MapComponent implements OnChanges {
     }
 
     const casesInProvince = this.casesInProvinces.find(byID(id)).cases;
-
-    const lightness = calculateLightness(
-      casesInProvince,
-      this.minCases,
-      this.maxCases
-    );
-    return `hsla(338,100%,${lightness}%,1)`;
+    const lightness = calculateLightness(casesInProvince, this.maxCases);
+    return `hsla(${this.hue},100%,${lightness}%,1)`;
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.casesInProvinces) {
-      [this.minCases, this.maxCases] = this.casesInProvinces.reduce(
-        minmax,
-        getFirstValue(this.casesInProvinces)
+      this.maxCases = this.casesInProvinces.reduce(
+        max,
+        this.casesInProvinces[0].cases
       );
     }
   }
