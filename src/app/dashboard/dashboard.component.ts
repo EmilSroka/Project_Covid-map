@@ -4,13 +4,12 @@ import { CasesService } from './cases/cases.service';
 
 @Component({
   selector: 'app-dashboard',
-  template: `<app-map
-    [provinces]="provincesService.getProvinces()"
-    [casesInProvinces]="casesService.getCases()"
-  ></app-map>`,
-  styles: [''],
+  templateUrl: './dashboard.component.html',
+  styleUrls: ['dashboard.component.scss'],
 })
 export class DashboardComponent {
+  private title = 'Coronavirus cases in Poland';
+
   constructor(
     public provincesService: ProvincesService,
     public casesService: CasesService
