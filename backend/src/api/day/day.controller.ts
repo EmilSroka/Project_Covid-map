@@ -1,5 +1,5 @@
 import { Controller, Get, Param, BadRequestException } from '@nestjs/common';
-import { DateValidator, convertToDate } from '../data/date.helpers';
+import { DateValidator, convertToDate } from './date.helpers';
 import { DataService } from '../data/data.service';
 
 @Controller('api/day')
