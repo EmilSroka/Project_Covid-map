@@ -1,4 +1,4 @@
-import { DailyCases, Cases, Provinces } from '../../../../common/data.types';
+import { DailyCases, Cases, Provinces } from '../types/data.types';
 
 export function byDate(expected: Date): (Date) => boolean {
   return ({ date }) => date.getTime() === expected.getTime();

@@ -1,5 +1,5 @@
 import { Injectable, HttpService } from '@nestjs/common';
-import { DailyCases, Cases, Provinces } from '../../../../common/data.types';
+import { DailyCases, Cases, Provinces } from '../types/data.types';
 import { byDate, EmptyDay } from './data.helpers';
 import { map } from 'rxjs/operators';
 import { Scraper } from './scraper.helpers';
