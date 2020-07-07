@@ -50,8 +50,9 @@ export class MapComponent implements OnChanges {
       const provinceID = (event.target as HTMLInputElement).getAttribute('id');
       const provinceName = this.provinces.find(byID(provinceID))?.name;
       const provinceCases = this.casesInProvinces.find(byID(provinceID))?.cases;
+      const info = provinceCases === -1 ? 'no data' : provinceCases;
 
-      this.tooltipContent = `${provinceName}: ${provinceCases}`;
+      this.tooltipContent = `${provinceName}: ${info}`;
       this.tooltipPosition = {
         x: this.currentMousePosition.x,
         y: this.currentMousePosition.y + 20,

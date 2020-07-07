@@ -12,6 +12,11 @@
   font-family: 'Lato', sans-serif;
   padding-top: 24px;
   margin-bottom: 12px;
+  font-size: 1.3rem;
+
+  @media (min-width: 600px) {
+    font-size: 2rem;
+  }
 }
 
 .map {
