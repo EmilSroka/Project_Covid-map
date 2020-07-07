@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Province } from '../map/map.types';
+import { Province } from '../types/data.types';
 
 @Injectable()
 export class ProvincesService {

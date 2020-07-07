@@ -1,6 +1,6 @@
 import { Component, OnChanges, Input, SimpleChanges } from '@angular/core';
 import { max, byID, calculateLightness } from './map.helpers';
-import { Province, ProvinceCases, validHue } from './map.types';
+import { Province, Cases, validHue } from '../types/data.types';
 
 @Component({
   selector: 'app-map',
@@ -9,7 +9,7 @@ import { Province, ProvinceCases, validHue } from './map.types';
 })
 export class MapComponent implements OnChanges {
   @Input() provinces: Province[];
-  @Input() casesInProvinces: ProvinceCases[];
+  @Input() casesInProvinces: Cases[];
   @Input() hue: validHue = 355;
 
   private maxCases = 0;
@@ -19,7 +19,7 @@ export class MapComponent implements OnChanges {
       return 'black';
     }
 
-    const casesInProvince = this.casesInProvinces.find(byID(id)).cases;
+    const casesInProvince = this.casesInProvinces.find(byID(id))?.cases;
     const lightness = calculateLightness(casesInProvince, this.maxCases);
     return `hsla(${this.hue},100%,${lightness}%,1)`;
   }
@@ -28,7 +28,7 @@ export class MapComponent implements OnChanges {
     if (changes.casesInProvinces) {
       this.maxCases = this.casesInProvinces.reduce(
         max,
-        this.casesInProvinces[0].cases
+        this.casesInProvinces[0] ? this.casesInProvinces[0].cases : 0
       );
     }
   }
