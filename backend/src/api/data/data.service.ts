@@ -33,6 +33,7 @@ export class DataService {
       .toPromise();
   }
 
+  private readonly noCasesString = '–';
   private format([dates, tabularData]: [Date[], string[][]]): DailyCases[] {
     const data: DailyCases[] = [];
     for (let i = 0; i < dates.length; i++) {
@@ -40,7 +41,10 @@ export class DataService {
       for (let j = 0; j < tabularData[i].length; j++) {
         cases.push({
           id: Provinces[j],
-          cases: tabularData[i][j] == '-' ? -1 : Number(tabularData[i][j]),
+          cases:
+            tabularData[i][j] === this.noCasesString
+              ? 0
+              : Number(tabularData[i][j]),
         });
       }
       data.push({ date: dates[i], cases });

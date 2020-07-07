@@ -10,7 +10,7 @@ import { DailyCases } from './types/data.types';
 })
 export class DashboardComponent {
   public title = 'Coronavirus cases in Poland';
-  public date = new Date(2020, 5, 20);
+  public date = new Date(2020, 2, 8);
   public cases = [];
 
   constructor(
