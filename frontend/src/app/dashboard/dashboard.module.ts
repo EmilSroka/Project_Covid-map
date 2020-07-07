@@ -10,9 +10,10 @@ import { DashboardComponent } from './dashboard.component';
 // providers
 import { ProvincesService } from './provinces/provinces.service';
 import { CasesService } from './cases/cases.service';
+import { DatePickerComponent } from './date-picker/date-picker.component';
 
 @NgModule({
-  declarations: [MapComponent, DashboardComponent],
+  declarations: [MapComponent, DashboardComponent, DatePickerComponent],
   imports: [BrowserModule, HttpClientModule],
   exports: [DashboardComponent],
   providers: [ProvincesService, CasesService],
