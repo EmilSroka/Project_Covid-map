@@ -17,13 +17,23 @@ export function noDataForThisDay(value: number): boolean {
   return value === -1;
 }
 
-export function wait(ms: number): Promise<void> {
-  return new Promise((resolve) => setTimeout(() => resolve(), ms));
-}
+const tooltipOffset = 30;
+export function calculateTooltipData(
+  event: MouseEvent,
+  provinces: Province[],
+  cases: Cases[],
+  mousePosition: Position
+): [string, Position] {
+  const provinceID = (event.target as HTMLInputElement).getAttribute('id');
+  const provinceName = provinces.find(byID(provinceID))?.name;
+  const provinceCases = cases.find(byID(provinceID))?.cases;
+  const casesInfo = provinceCases === -1 ? 'no data' : provinceCases;
 
-export function arePositionsEqual(
-  { x: x1, y: y1 }: Position,
-  { x: x2, y: y2 }: Position
-): boolean {
-  return x1 === x2 && y1 === y2;
+  return [
+    `${provinceName}: ${casesInfo}`,
+    {
+      x: mousePosition.x,
+      y: mousePosition.y + document.documentElement.scrollTop + tooltipOffset,
+    },
+  ];
 }

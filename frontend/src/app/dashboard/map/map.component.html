@@ -3,16 +3,19 @@
   mapsvg:geoViewBox="14.122232 54.834941 24.149724 49.002699"
   viewBox="0 0 612.75696 577.23169"
   class="svg-root"
-  (mouseout)="hideTooltip()"
+  [attr.aria-labelledby]="titleID"
 >
-  <path
-    *ngFor="let province of provinces"
-    [attr.d]="province.borders"
-    [id]="province.id"
-    [attr.fill]="getColorByID(province.id)"
-    stroke="black"
-    (mousemove)="handleTooltip($event)"
-  ></path>
+  <g role="list">
+    <path
+      role="listitem"
+      *ngFor="let province of provinces"
+      [attr.d]="province.borders"
+      [id]="province.id"
+      [attr.fill]="getColorByID(province.id)"
+      stroke="black"
+      [attr.aria-label]="getProvinceDescriptionByID(province.id)"
+    ></path>
+  </g>
 </svg>
 
 <app-tooltip

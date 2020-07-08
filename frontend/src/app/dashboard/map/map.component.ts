@@ -1,23 +1,32 @@
-import { Component, OnChanges, Input, SimpleChanges } from '@angular/core';
+import {
+  Component,
+  OnChanges,
+  Input,
+  SimpleChanges,
+  HostListener,
+  EventEmitter,
+  OnInit,
+} from '@angular/core';
 import {
   max,
   byID,
   calculateLightness,
   noDataForThisDay,
-  wait,
-  arePositionsEqual,
+  calculateTooltipData,
 } from './map.helpers';
 import { Province, Cases, validHue } from '../types/data.types';
+import { delay, debounceTime } from 'rxjs/operators';
 
 @Component({
   selector: 'app-map',
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.scss'],
 })
-export class MapComponent implements OnChanges {
+export class MapComponent implements OnChanges, OnInit {
   @Input() provinces: Province[];
   @Input() casesInProvinces: Cases[];
   @Input() hue: validHue = 355;
+  @Input() titleID: string;
 
   private maxCases = 0;
 
@@ -26,7 +35,40 @@ export class MapComponent implements OnChanges {
   public tooltipContent = '';
 
   private currentMousePosition = { x: 0, y: 0 };
-  private readonly tooltipTime = 1000;
+  readonly tooltipTime = 1000;
+
+  private mouseMove = new EventEmitter<MouseEvent>();
+  private mouseOut = new EventEmitter<MouseEvent>();
+
+  ngOnInit(): void {
+    this.mouseMove
+      .pipe(delay(this.tooltipTime / 2), debounceTime(this.tooltipTime / 2))
+      .subscribe((event) => this.handleTooltip(event));
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.casesInProvinces) {
+      this.maxCases = this.casesInProvinces.reduce(
+        max,
+        this.casesInProvinces[0] ? this.casesInProvinces[0].cases : 0
+      );
+    }
+  }
+
+  @HostListener('mousemove', ['$event'])
+  onMouseMove(event: MouseEvent): void {
+    this.currentMousePosition = { x: event.screenX, y: event.screenY };
+    this.isTooltipVisible = false;
+    this.mouseMove.emit(event);
+    event.stopPropagation();
+  }
+
+  @HostListener('mouseout', ['$event'])
+  onMouseOut(event: MouseEvent): void {
+    this.isTooltipVisible = false;
+    this.mouseOut.emit(event);
+    event.stopPropagation();
+  }
 
   getColorByID(id: string): string {
     if (!this.casesInProvinces) return 'black';
@@ -39,39 +81,29 @@ export class MapComponent implements OnChanges {
     return `hsla(${this.hue},100%,${lightness}%,1)`;
   }
 
-  async handleTooltip(event: MouseEvent): Promise<void> {
-    this.isTooltipVisible = false;
-    this.currentMousePosition = { x: event.clientX, y: event.clientY };
-    const onEventStartMousePosition = { x: event.clientX, y: event.clientY };
-    await wait(this.tooltipTime);
-    if (
-      arePositionsEqual(this.currentMousePosition, onEventStartMousePosition)
-    ) {
-      const provinceID = (event.target as HTMLInputElement).getAttribute('id');
-      const provinceName = this.provinces.find(byID(provinceID))?.name;
-      const provinceCases = this.casesInProvinces.find(byID(provinceID))?.cases;
-      const info = provinceCases === -1 ? 'no data' : provinceCases;
+  handleTooltip(event: MouseEvent): void {
+    if ((event.target as HTMLElement).tagName !== 'path') return;
 
-      this.tooltipContent = `${provinceName}: ${info}`;
-      this.tooltipPosition = {
-        x: this.currentMousePosition.x,
-        y: this.currentMousePosition.y + 20,
-      };
-      this.isTooltipVisible = true;
-    }
+    [this.tooltipContent, this.tooltipPosition] = calculateTooltipData(
+      event,
+      this.provinces,
+      this.casesInProvinces,
+      { x: event.clientX, y: event.clientY }
+    );
+    this.isTooltipVisible = true;
+  }
+
+  getProvinceDescriptionByID(id: string): string {
+    const provinceName = this.provinces.find(byID(id))?.name;
+    const provinceCases = this.casesInProvinces.find(byID(id))?.cases;
+
+    const casesInfo =
+      provinceCases === -1 ? 'no data' : `${provinceCases} cases`;
+    return `${provinceName}: ${casesInfo}`;
   }
 
   hideTooltip(): void {
     this.isTooltipVisible = false;
     this.currentMousePosition = { x: -1, y: -1 };
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes.casesInProvinces) {
-      this.maxCases = this.casesInProvinces.reduce(
-        max,
-        this.casesInProvinces[0] ? this.casesInProvinces[0].cases : 0
-      );
-    }
   }
 }

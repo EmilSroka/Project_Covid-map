@@ -12,6 +12,7 @@ const dateOfFirstCase = new Date(2020, 2, 4);
 })
 export class DashboardComponent {
   public date = dateOfFirstCase;
+  public provinces = [];
   public cases = [];
 
   constructor(
@@ -21,6 +22,8 @@ export class DashboardComponent {
     this.casesService
       .getCases(this.date)
       .subscribe(({ cases }: DailyCases) => (this.cases = cases));
+
+    this.provinces = this.provincesService.getProvinces();
   }
 
   updateData(newDate: Date): void {
