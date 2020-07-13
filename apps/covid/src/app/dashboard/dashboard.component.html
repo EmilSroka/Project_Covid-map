@@ -3,14 +3,14 @@
   <h1 class="title" id="title">
     Coronavirus cases in Poland on {{ date | date: 'dd.MM.yyyy' }}
   </h1>
-  <app-map
+  <covid-app-map
     [provinces]="provinces"
     [casesInProvinces]="cases"
     class="map"
     titleID="title"
-  ></app-map>
-  <app-date-picker
+  ></covid-app-map>
+  <covid-app-date-picker
     [currentDate]="date"
     (dateChange)="updateData($event)"
-  ></app-date-picker>
+  ></covid-app-date-picker>
 </div>

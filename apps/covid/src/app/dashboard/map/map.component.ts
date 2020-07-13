@@ -18,7 +18,7 @@ import { Province, Cases, validHue } from '../types/data.types';
 import { filter, debounceTime } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-map',
+  selector: 'covid-app-map',
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.scss'],
 })
@@ -36,11 +36,11 @@ export class MapComponent implements OnChanges, OnInit {
 
   readonly tooltipTime = 1000;
 
-  private mouseMove = new EventEmitter<MouseEvent>();
+  private mouseMove$ = new EventEmitter<MouseEvent>();
   private isMouseOver = false;
 
   ngOnInit(): void {
-    this.mouseMove
+    this.mouseMove$
       .pipe(
         debounceTime(this.tooltipTime),
         filter(() => this.isMouseOver)
@@ -60,7 +60,7 @@ export class MapComponent implements OnChanges, OnInit {
   @HostListener('mousemove', ['$event'])
   onMouseMove(event: MouseEvent): void {
     this.isTooltipVisible = false;
-    this.mouseMove.emit(event);
+    this.mouseMove$.emit(event);
     event.stopPropagation();
   }
 

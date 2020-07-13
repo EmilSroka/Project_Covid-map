@@ -1,10 +1,10 @@
 import { Directive, ElementRef, Input, AfterContentInit } from '@angular/core';
 
 @Directive({
-  selector: '[appTranslateHorizontally]',
+  selector: '[covidAppTranslateHorizontally]',
 })
 export class TranslateHorizontallyDirective implements AfterContentInit {
-  @Input('appTranslateHorizontally') transitionPercentage: number;
+  @Input('covidAppTranslateHorizontally') transitionPercentage: number;
 
   constructor(private el: ElementRef) {}
 
