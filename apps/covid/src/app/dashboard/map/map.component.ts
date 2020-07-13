@@ -15,7 +15,7 @@ import {
   calculateTooltipData,
 } from './map.helpers';
 import { Province, Cases, validHue } from '../types/data.types';
-import { delay, debounceTime } from 'rxjs/operators';
+import { filter, debounceTime } from 'rxjs/operators';
 
 @Component({
   selector: 'app-map',
@@ -37,11 +37,14 @@ export class MapComponent implements OnChanges, OnInit {
   readonly tooltipTime = 1000;
 
   private mouseMove = new EventEmitter<MouseEvent>();
-  private mouseOut = new EventEmitter<MouseEvent>();
+  private isMouseOver = false;
 
   ngOnInit(): void {
     this.mouseMove
-      .pipe(delay(this.tooltipTime / 2), debounceTime(this.tooltipTime / 2))
+      .pipe(
+        debounceTime(this.tooltipTime),
+        filter(() => this.isMouseOver)
+      )
       .subscribe((event) => this.handleTooltip(event));
   }
 
@@ -58,13 +61,6 @@ export class MapComponent implements OnChanges, OnInit {
   onMouseMove(event: MouseEvent): void {
     this.isTooltipVisible = false;
     this.mouseMove.emit(event);
-    event.stopPropagation();
-  }
-
-  @HostListener('mouseout', ['$event'])
-  onMouseOut(event: MouseEvent): void {
-    this.isTooltipVisible = false;
-    this.mouseOut.emit(event);
     event.stopPropagation();
   }
 
@@ -100,7 +96,7 @@ export class MapComponent implements OnChanges, OnInit {
     return `${provinceName}: ${casesInfo}`;
   }
 
-  hideTooltip(): void {
-    this.isTooltipVisible = false;
+  updateMouseInfo(type: string) {
+    this.isMouseOver = type === 'mouseover' ? true : false;
   }
 }

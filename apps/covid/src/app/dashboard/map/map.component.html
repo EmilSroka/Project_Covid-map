@@ -4,6 +4,8 @@
   viewBox="0 0 612.75696 577.23169"
   class="svg-root"
   [attr.aria-labelledby]="titleID"
+  (mouseover)="updateMouseInfo($event.type)"
+  (mouseout)="updateMouseInfo($event.type)"
 >
   <g role="list">
     <path
