@@ -1,0 +1,7 @@
+<input
+  class="date-picker"
+  type="date"
+  aria-label="Choose date"
+  value="{{ currentDate | date: 'yyyy-MM-dd' }}"
+  (change)="changeDate($event.target.value)"
+/>

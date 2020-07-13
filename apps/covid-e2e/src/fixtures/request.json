@@ -1,0 +1,22 @@
+{
+  "date": "2020-03-11T23:00:00.000Z",
+  "cases": [
+    { "id": "PL-DS", "cases": 3 },
+    { "id": "PL-KP", "cases": 0 },
+    { "id": "PL-LU", "cases": 4 },
+    { "id": "PL-LB", "cases": 0 },
+    { "id": "PL-LD", "cases": 1 },
+    { "id": "PL-MA", "cases": 0 },
+    { "id": "PL-MZ", "cases": 2 },
+    { "id": "PL-OP", "cases": 1 },
+    { "id": "PL-PK", "cases": 2 },
+    { "id": "PL-PD", "cases": 0 },
+    { "id": "PL-PM", "cases": 0 },
+    { "id": "PL-SL", "cases": 3 },
+    { "id": "PL-SK", "cases": 0 },
+    { "id": "PL-WN", "cases": 0 },
+    { "id": "PL-WP", "cases": 3 },
+    { "id": "PL-ZP", "cases": 1 },
+    { "cases": 0 }
+  ]
+}

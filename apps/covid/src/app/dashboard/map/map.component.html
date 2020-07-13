@@ -1,0 +1,27 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  mapsvg:geoViewBox="14.122232 54.834941 24.149724 49.002699"
+  viewBox="0 0 612.75696 577.23169"
+  class="svg-root"
+  [attr.aria-labelledby]="titleID"
+  (mouseover)="updateMouseInfo($event.type)"
+  (mouseout)="updateMouseInfo($event.type)"
+>
+  <g role="list">
+    <path
+      role="listitem"
+      *ngFor="let province of provinces"
+      [attr.d]="province.borders"
+      [id]="province.id"
+      [attr.fill]="getColorByID(province.id)"
+      stroke="black"
+      [attr.aria-label]="getProvinceDescriptionByID(province.id)"
+    ></path>
+  </g>
+</svg>
+
+<covid-app-tooltip
+  [content]="tooltipContent"
+  [postion]="tooltipPosition"
+  [isVisible]="isTooltipVisible"
+></covid-app-tooltip>
