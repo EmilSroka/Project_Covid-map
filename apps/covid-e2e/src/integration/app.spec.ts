@@ -1,5 +1,3 @@
-import { verify } from 'cypress/types/sinon';
-
 describe('covid', () => {
   const pandemicStart = '2020-03-04';
   const backednURL = 'http://localhost:7000/api/day/*';

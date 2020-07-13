@@ -6,6 +6,7 @@ import {
   HostListener,
   EventEmitter,
   OnInit,
+  OnDestroy,
 } from '@angular/core';
 import {
   max,
@@ -22,7 +23,7 @@ import { filter, debounceTime } from 'rxjs/operators';
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.scss'],
 })
-export class MapComponent implements OnChanges, OnInit {
+export class MapComponent implements OnChanges, OnInit, OnDestroy {
   @Input() provinces: Province[];
   @Input() casesInProvinces: Cases[];
   @Input() hue: validHue = 355;
@@ -46,6 +47,10 @@ export class MapComponent implements OnChanges, OnInit {
         filter(() => this.isMouseOver)
       )
       .subscribe((event) => this.handleTooltip(event));
+  }
+
+  ngOnDestroy(): void {
+    this.mouseMove$.unsubscribe();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
