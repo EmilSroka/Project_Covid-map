@@ -1,8 +1,14 @@
 import { Module } from '@nestjs/common';
 import { ApiModule } from './api/api.module';
-import { ConfigModule } from '@nestjs/config';
+import { join } from 'path';
+import { ServeStaticModule } from '@nestjs/serve-static';
 
 @Module({
-  imports: [ApiModule, ConfigModule.forRoot()],
+  imports: [
+    ApiModule,
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'covid'),
+    }),
+  ],
 })
 export class AppModule {}
