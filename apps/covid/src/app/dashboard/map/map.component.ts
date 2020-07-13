@@ -34,7 +34,6 @@ export class MapComponent implements OnChanges, OnInit {
   public tooltipPosition = { x: 0, y: 0 };
   public tooltipContent = '';
 
-  private currentMousePosition = { x: 0, y: 0 };
   readonly tooltipTime = 1000;
 
   private mouseMove = new EventEmitter<MouseEvent>();
@@ -57,7 +56,6 @@ export class MapComponent implements OnChanges, OnInit {
 
   @HostListener('mousemove', ['$event'])
   onMouseMove(event: MouseEvent): void {
-    this.currentMousePosition = { x: event.screenX, y: event.screenY };
     this.isTooltipVisible = false;
     this.mouseMove.emit(event);
     event.stopPropagation();
@@ -104,6 +102,5 @@ export class MapComponent implements OnChanges, OnInit {
 
   hideTooltip(): void {
     this.isTooltipVisible = false;
-    this.currentMousePosition = { x: -1, y: -1 };
   }
 }

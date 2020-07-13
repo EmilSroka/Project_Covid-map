@@ -11,6 +11,7 @@ const dateOfFirstCase = new Date(2020, 2, 4);
   styleUrls: ['dashboard.component.scss'],
 })
 export class DashboardComponent {
+  public isErrorMessage = false;
   public date = dateOfFirstCase;
   public provinces = [];
   public cases = [];
@@ -19,17 +20,23 @@ export class DashboardComponent {
     public provincesService: ProvincesService,
     public casesService: CasesService
   ) {
-    this.casesService
-      .getCases(this.date)
-      .subscribe(({ cases }: DailyCases) => (this.cases = cases));
+    this.updateData(this.date);
 
     this.provinces = this.provincesService.getProvinces();
   }
 
   updateData(newDate: Date): void {
-    this.date = newDate;
-    this.casesService
-      .getCases(this.date)
-      .subscribe(({ cases }: DailyCases) => (this.cases = cases));
+    this.casesService.getCases(newDate).subscribe(
+      ({ cases, date }: DailyCases) => {
+        this.cases = cases;
+        this.date = new Date(date);
+        this.isErrorMessage = false;
+      },
+      ({ cases, date }: DailyCases) => {
+        this.cases = cases;
+        this.date = new Date(date);
+        this.isErrorMessage = true;
+      }
+    );
   }
 }

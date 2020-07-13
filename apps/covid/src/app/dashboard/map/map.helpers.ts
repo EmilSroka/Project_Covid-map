@@ -14,7 +14,7 @@ export function calculateLightness(value: number, maxValue: number): number {
 }
 
 export function noDataForThisDay(value: number): boolean {
-  return value === -1;
+  return value == null || value === -1;
 }
 
 const tooltipOffset = 30;
