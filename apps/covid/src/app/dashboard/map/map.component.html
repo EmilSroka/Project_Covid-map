@@ -3,10 +3,15 @@
   mapsvg:geoViewBox="14.122232 54.834941 24.149724 49.002699"
   viewBox="0 0 612.75696 577.23169"
   class="svg-root"
+  role="group"
   [attr.aria-labelledby]="titleID"
+  aria-describedby="map-description"
   (mouseover)="updateMouseInfo($event.type)"
   (mouseout)="updateMouseInfo($event.type)"
 >
+  <desc id="map-description">
+    COVID-19 cases in provinces on given date
+  </desc>
   <g role="list">
     <path
       role="listitem"

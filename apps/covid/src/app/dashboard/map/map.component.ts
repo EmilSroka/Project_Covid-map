@@ -17,6 +17,7 @@ import {
 } from './map.helpers';
 import { Province, Cases, validHue } from '../types/data.types';
 import { filter, debounceTime } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'covid-app-map',
@@ -38,10 +39,11 @@ export class MapComponent implements OnChanges, OnInit, OnDestroy {
   readonly tooltipTime = 1000;
 
   private mouseMove$ = new EventEmitter<MouseEvent>();
+  private mouseMoveSubscription: Subscription;
   private isMouseOver = false;
 
   ngOnInit(): void {
-    this.mouseMove$
+    this.mouseMoveSubscription = this.mouseMove$
       .pipe(
         debounceTime(this.tooltipTime),
         filter(() => this.isMouseOver)
@@ -50,7 +52,7 @@ export class MapComponent implements OnChanges, OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.mouseMove$.unsubscribe();
+    this.mouseMoveSubscription.unsubscribe();
   }
 
   ngOnChanges(changes: SimpleChanges): void {

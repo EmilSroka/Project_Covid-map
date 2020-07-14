@@ -4,7 +4,7 @@ import { TestBed, async, ComponentFixture } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
 @Component({
-  selector: 'app-test-container',
+  selector: 'covid-app-test-container',
   template: `<div style="width:100px;left:300px;top:100px" class="tested">
     content
   </div>`,
