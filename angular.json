@@ -203,25 +203,22 @@
         }
       }
     },
-    "test-app": {
-      "root": "apps/test-app",
-      "sourceRoot": "apps/test-app/src",
+    "react": {
+      "root": "apps/react",
+      "sourceRoot": "apps/react/src",
       "projectType": "application",
       "schematics": {},
       "architect": {
         "build": {
           "builder": "@nrwl/web:build",
           "options": {
-            "outputPath": "dist/apps/test-app",
-            "index": "apps/test-app/src/index.html",
-            "main": "apps/test-app/src/main.tsx",
-            "polyfills": "apps/test-app/src/polyfills.ts",
-            "tsConfig": "apps/test-app/tsconfig.app.json",
-            "assets": [
-              "apps/test-app/src/favicon.ico",
-              "apps/test-app/src/assets"
-            ],
-            "styles": ["apps/test-app/src/styles.scss"],
+            "outputPath": "dist/apps/react",
+            "index": "apps/react/src/index.html",
+            "main": "apps/react/src/main.tsx",
+            "polyfills": "apps/react/src/polyfills.ts",
+            "tsConfig": "apps/react/tsconfig.app.json",
+            "assets": ["apps/react/src/favicon.ico", "apps/react/src/assets"],
+            "styles": ["apps/react/src/styles.scss"],
             "scripts": [],
             "webpackConfig": "@nrwl/react/plugins/webpack"
           },
@@ -229,8 +226,8 @@
             "production": {
               "fileReplacements": [
                 {
-                  "replace": "apps/test-app/src/environments/environment.ts",
-                  "with": "apps/test-app/src/environments/environment.prod.ts"
+                  "replace": "apps/react/src/environments/environment.ts",
+                  "with": "apps/react/src/environments/environment.prod.ts"
                 }
               ],
               "optimization": true,
@@ -253,11 +250,11 @@
         "serve": {
           "builder": "@nrwl/web:dev-server",
           "options": {
-            "buildTarget": "test-app:build"
+            "buildTarget": "react:build"
           },
           "configurations": {
             "production": {
-              "buildTarget": "test-app:build:production"
+              "buildTarget": "react:build:production"
             }
           }
         },
@@ -265,45 +262,45 @@
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
             "tsConfig": [
-              "apps/test-app/tsconfig.app.json",
-              "apps/test-app/tsconfig.spec.json"
+              "apps/react/tsconfig.app.json",
+              "apps/react/tsconfig.spec.json"
             ],
-            "exclude": ["**/node_modules/**", "!apps/test-app/**/*"]
+            "exclude": ["**/node_modules/**", "!apps/react/**/*"]
           }
         },
         "test": {
           "builder": "@nrwl/jest:jest",
           "options": {
-            "jestConfig": "apps/test-app/jest.config.js",
-            "tsConfig": "apps/test-app/tsconfig.spec.json",
+            "jestConfig": "apps/react/jest.config.js",
+            "tsConfig": "apps/react/tsconfig.spec.json",
             "passWithNoTests": true
           }
         }
       }
     },
-    "test-app-e2e": {
-      "root": "apps/test-app-e2e",
-      "sourceRoot": "apps/test-app-e2e/src",
+    "react-e2e": {
+      "root": "apps/react-e2e",
+      "sourceRoot": "apps/react-e2e/src",
       "projectType": "application",
       "architect": {
         "e2e": {
           "builder": "@nrwl/cypress:cypress",
           "options": {
-            "cypressConfig": "apps/test-app-e2e/cypress.json",
-            "tsConfig": "apps/test-app-e2e/tsconfig.e2e.json",
-            "devServerTarget": "test-app:serve"
+            "cypressConfig": "apps/react-e2e/cypress.json",
+            "tsConfig": "apps/react-e2e/tsconfig.e2e.json",
+            "devServerTarget": "react:serve"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "test-app:serve:production"
+              "devServerTarget": "react:serve:production"
             }
           }
         },
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
-            "tsConfig": ["apps/test-app-e2e/tsconfig.e2e.json"],
-            "exclude": ["**/node_modules/**", "!apps/test-app-e2e/**/*"]
+            "tsConfig": ["apps/react-e2e/tsconfig.e2e.json"],
+            "exclude": ["**/node_modules/**", "!apps/react-e2e/**/*"]
           }
         }
       }

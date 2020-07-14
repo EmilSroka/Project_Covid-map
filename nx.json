@@ -35,12 +35,12 @@
     "api-interfaces": {
       "tags": []
     },
-    "test-app": {
+    "react": {
       "tags": []
     },
-    "test-app-e2e": {
+    "react-e2e": {
       "tags": [],
-      "implicitDependencies": ["test-app"]
+      "implicitDependencies": ["react"]
     }
   }
 }
