@@ -13,9 +13,9 @@ import {
   byID,
   calculateLightness,
   noDataForThisDay,
-  calculateTooltipData,
+  isProvince,
 } from './map.helpers';
-import { Province, Cases, validHue } from '../types/data.types';
+import { Province, Cases } from '@covid-app/types';
 import { filter, debounceTime } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
 
@@ -27,7 +27,7 @@ import { Subscription } from 'rxjs';
 export class MapComponent implements OnChanges, OnInit, OnDestroy {
   @Input() provinces: Province[];
   @Input() casesInProvinces: Cases[];
-  @Input() hue: validHue = 355;
+  @Input() hue: number = 355;
   @Input() titleID: string;
 
   private maxCases = 0;
@@ -37,6 +37,7 @@ export class MapComponent implements OnChanges, OnInit, OnDestroy {
   public tooltipContent = '';
 
   readonly tooltipTime = 1000;
+  readonly tooltipOffset = 30;
 
   private mouseMove$ = new EventEmitter<MouseEvent>();
   private mouseMoveSubscription: Subscription;
@@ -79,18 +80,22 @@ export class MapComponent implements OnChanges, OnInit, OnDestroy {
     if (noDataForThisDay(casesInProvince)) return 'black';
 
     const lightness = calculateLightness(casesInProvince, this.maxCases);
-    return `hsla(${this.hue},100%,${lightness}%,1)`;
+    return `hsla(${Math.round(this.hue)},100%,${lightness}%,1)`;
   }
 
-  handleTooltip(event: MouseEvent): void {
-    if ((event.target as HTMLElement).tagName !== 'path') return;
+  handleTooltip({ target, clientX, clientY }: MouseEvent): void {
+    if (!isProvince(target)) return;
 
-    [this.tooltipContent, this.tooltipPosition] = calculateTooltipData(
-      event,
-      this.provinces,
-      this.casesInProvinces,
-      { x: event.clientX, y: event.clientY }
-    );
+    const provinceID = (target as HTMLElement).getAttribute('id');
+    const provinceName = this.provinces.find(byID(provinceID))?.name;
+    const provinceCases = this.casesInProvinces.find(byID(provinceID))?.cases;
+    const casesInfo = provinceCases === -1 ? 'no data' : provinceCases;
+
+    this.tooltipContent = `${provinceName}: ${casesInfo}`;
+    this.tooltipPosition = {
+      x: clientX,
+      y: clientY + document.documentElement.scrollTop + this.tooltipOffset,
+    };
     this.isTooltipVisible = true;
   }
 

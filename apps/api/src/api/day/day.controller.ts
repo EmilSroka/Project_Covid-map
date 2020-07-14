@@ -1,7 +1,6 @@
 import { Controller, Get, Param, BadRequestException } from '@nestjs/common';
 import { DateValidator, convertToDate } from './date.helpers';
 import { DataService } from '../data/data.service';
-import { DailyCases } from '../types/data.types';
 
 @Controller('day')
 export class DayController {

@@ -1,5 +1,5 @@
 import { Injectable, HttpService } from '@nestjs/common';
-import { DailyCases, Cases, Provinces } from '../types/data.types';
+import { DailyCases, Cases, Provinces } from '@covid-app/types';
 import { byDate, EmptyDay } from './data.helpers';
 import { map } from 'rxjs/operators';
 import { Scraper } from './scraper.helpers';
@@ -23,6 +23,8 @@ export class DataService {
     const result = this.data.find(byDate(date));
     return result ? result : new EmptyDay(date);
   }
+
+  private getIntervalCases(start: Date, stop: Date) {}
 
   private fetchData() {
     return this.httpService

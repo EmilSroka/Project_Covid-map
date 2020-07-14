@@ -16,7 +16,8 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@covid-app/api-interfaces": ["libs/api-interfaces/src/index.ts"]
+      "@covid-app/api-interfaces": ["libs/api-interfaces/src/index.ts"],
+      "@covid-app/types": ["libs/types/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
