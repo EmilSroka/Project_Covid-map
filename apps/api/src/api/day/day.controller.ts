@@ -1,8 +1,8 @@
 import { Controller, Get, Param, BadRequestException } from '@nestjs/common';
-import { DateValidator, convertToDate } from './date.helpers';
+import { DateValidator, convertToDate } from '../helpers/date.helpers';
 import { DataService } from '../data/data.service';
 
-@Controller('day')
+@Controller('api/day')
 export class DayController {
   constructor(private wikipediaAPI: DataService) {}
 
@@ -12,6 +12,6 @@ export class DayController {
       throw new BadRequestException('Invalid date');
     }
 
-    return this.wikipediaAPI.get(convertToDate(day));
+    return this.wikipediaAPI.getByDate(convertToDate(day));
   }
 }

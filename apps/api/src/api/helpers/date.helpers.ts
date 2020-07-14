@@ -1,3 +1,6 @@
+import { DailyCases } from '@covid-app/types';
+import { byDate } from '../data/data.helpers';
+
 const dateRegex = /^(\d{1,2})-(\d{1,2})-(\d{4})$/;
 
 const monthsWith30Days = [4, 6, 9, 11];
@@ -55,7 +58,12 @@ export class DateValidator {
 
 export function convertToDate(date: string) {
   const [, day, month, year] = date.match(dateRegex);
-  return new Date(Number(year), Number(month) - 1, Number(day));
+  return new Date(
+    Number(year),
+    Number(month) - 1,
+    Number(day),
+    Number(process.env.TIMEZONE)
+  );
 }
 
 function isLeapYear(year: number): boolean {
@@ -64,4 +72,40 @@ function isLeapYear(year: number): boolean {
 
 function inRange(value, min, max): boolean {
   return value >= min && value <= max;
+}
+
+export function getDaysInInterval(
+  start: Date,
+  stop: Date,
+  days: DailyCases[]
+): DailyCases[] {
+  if (!intersects(start, stop, days)) {
+    return [];
+  }
+
+  const startIndex = days.findIndex(byDate(start));
+  const stopIndex = days.findIndex(byDate(stop));
+
+  return days.slice(
+    startIndex === -1 ? 0 : startIndex,
+    stopIndex === -1 ? days.length : stopIndex + 1
+  );
+}
+
+function intersects(start: Date, stop: Date, days: DailyCases[]): boolean {
+  const firstDay = days[0].date;
+  const lastDay = days[days.length - 1].date;
+
+  return !(
+    firstDay.getTime() - stop.getTime() > 0 ||
+    start.getTime() - lastDay.getTime() > 0
+  );
+
+  // return (
+  //   start.getTime() - firstDay.getTime() > 0 ||
+  //   lastDay.getTime() - stop.getTime() > 0
+  // );
+
+  // return firstDay.getTime() - stop.getTime() > 0 ||
+  // start.getTime() - lastDay.getTime() > 0
 }

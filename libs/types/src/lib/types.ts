@@ -1,7 +1,7 @@
 export interface Province {
   borders: string;
   id: string;
-  name?: string;
+  name: string;
 }
 
 export interface Cases {
@@ -11,6 +11,12 @@ export interface Cases {
 
 export interface DailyCases {
   date: Date;
+  cases: Cases[];
+}
+
+export interface casesInInterval {
+  start: Date;
+  stop: Date;
   cases: Cases[];
 }
 

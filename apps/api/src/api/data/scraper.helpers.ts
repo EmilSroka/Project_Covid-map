@@ -31,7 +31,7 @@ export class Scraper {
     const casesTable: string[][] = FilledTableFactory(
       this.numberOfProvinces,
       data.length,
-      '',
+      ''
     );
 
     for (let [key, row] of Object.entries(data)) {
@@ -50,7 +50,7 @@ export class Scraper {
           columnIndex = getIndexOfFirstEmptyColumn(
             casesTable[rowIndex],
             columnIndex,
-            this.numberOfProvinces,
+            this.numberOfProvinces
           );
 
           const cases = getCases(cell);
@@ -63,7 +63,7 @@ export class Scraper {
               rowIndex,
               columnIndex,
               Number(rowspan),
-              cases,
+              cases
             );
           }
         }
@@ -119,13 +119,18 @@ const dateRegex = /(\d\d)\.(\d\d)/;
 const year = 2020;
 function extractDate(cell: string): Date {
   const [, day, month] = cell.match(dateRegex);
-  return new Date(year, Number(month) - 1, Number(day));
+  return new Date(
+    Number(year),
+    Number(month) - 1,
+    Number(day),
+    Number(process.env.TIMEZONE)
+  );
 }
 
 function getIndexOfFirstEmptyColumn(
   casesTableRow: string[],
   index: number,
-  limit: number,
+  limit: number
 ): number {
   while (casesTableRow[index] != '' && index < limit) {
     index += 1;
@@ -149,7 +154,7 @@ function fillNextNCellsInColumn<T>(
   startRow: number,
   column: number,
   count: number,
-  value: T,
+  value: T
 ) {
   for (let i = 1; i < count; i++) {
     table[startRow + i][column] = value;
