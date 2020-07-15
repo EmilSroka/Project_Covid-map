@@ -20,8 +20,6 @@ export class TranslateHorizontallyDirective
     const position = parseInt(this.el.nativeElement.style.left || 0, 0);
     const newPosition = position + width * this.transitionPercentage;
 
-    console.log(width, position, newPosition);
-
     this.el.nativeElement.style.left = `${newPosition}px`;
   }
 
@@ -29,8 +27,6 @@ export class TranslateHorizontallyDirective
     const width = this.el.nativeElement.getBoundingClientRect().width;
     const position = parseInt(this.el.nativeElement.style.left || 0, 0);
     const newPosition = position + width * this.transitionPercentage;
-
-    console.log(width, position, newPosition);
 
     this.el.nativeElement.style.left = `${newPosition}px`;
   }
