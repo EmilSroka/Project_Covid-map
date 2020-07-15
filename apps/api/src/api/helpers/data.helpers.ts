@@ -2,7 +2,7 @@ import {
   DailyCases,
   Cases,
   Provinces,
-  casesInInterval,
+  CasesInInterval,
 } from '@covid-app/types';
 
 export function byDate(expected: Date): (Date) => boolean {
@@ -21,7 +21,7 @@ export class EmptyDay implements DailyCases {
   }
 }
 
-export class EmptyInterval implements casesInInterval {
+export class EmptyInterval implements CasesInInterval {
   public cases: Cases[];
 
   constructor(public start: Date, public stop: Date, startValue: number) {

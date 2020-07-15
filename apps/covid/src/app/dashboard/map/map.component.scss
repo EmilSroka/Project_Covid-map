@@ -1,3 +1,7 @@
 .svg-root {
   width: 100%;
 }
+
+path {
+  transition: 0.3s ease-in-out fill;
+}

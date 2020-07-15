@@ -3,7 +3,7 @@ import {
   DailyCases,
   Cases,
   Provinces,
-  casesInInterval,
+  CasesInInterval,
 } from '@covid-app/types';
 import { byDate, EmptyDay, EmptyInterval } from '../helpers/data.helpers';
 import { map } from 'rxjs/operators';
@@ -28,7 +28,7 @@ export class DataService {
   public async getByInterval(
     start: Date,
     stop: Date
-  ): Promise<casesInInterval> {
+  ): Promise<CasesInInterval> {
     if (!this.data) {
       this.data = await this.fetchData();
     }
@@ -41,7 +41,7 @@ export class DataService {
     return result ? result : new EmptyDay(date);
   }
 
-  private getIntervalCases(start: Date, stop: Date): casesInInterval {
+  private getIntervalCases(start: Date, stop: Date): CasesInInterval {
     const interval = getDaysInInterval(start, stop, this.data);
 
     if (interval.length === 0) {

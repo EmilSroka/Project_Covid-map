@@ -14,7 +14,7 @@ export interface DailyCases {
   cases: Cases[];
 }
 
-export interface casesInInterval {
+export interface CasesInInterval {
   start: Date;
   stop: Date;
   cases: Cases[];
