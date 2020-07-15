@@ -41,6 +41,9 @@
     "react-e2e": {
       "tags": [],
       "implicitDependencies": ["react"]
+    },
+    "types": {
+      "tags": []
     }
   }
 }

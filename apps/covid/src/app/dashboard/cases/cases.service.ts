@@ -9,8 +9,6 @@ import { catchError } from 'rxjs/operators';
 export class CasesService {
   public data: Array<string[] | number[]> | null = null;
 
-  public x;
-
   constructor(private http: HttpClient) {}
 
   private getApiUrl(date: Date): string {

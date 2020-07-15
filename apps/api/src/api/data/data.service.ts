@@ -1,8 +1,14 @@
 import { Injectable, HttpService } from '@nestjs/common';
-import { DailyCases, Cases, Provinces } from '../types/data.types';
-import { byDate, EmptyDay } from './data.helpers';
+import {
+  DailyCases,
+  Cases,
+  Provinces,
+  casesInInterval,
+} from '@covid-app/types';
+import { byDate, EmptyDay, EmptyInterval } from '../helpers/data.helpers';
 import { map } from 'rxjs/operators';
 import { Scraper } from './scraper.helpers';
+import { getDaysInInterval } from '../helpers/date.helpers';
 
 @Injectable()
 export class DataService {
@@ -11,7 +17,7 @@ export class DataService {
 
   constructor(private httpService: HttpService) {}
 
-  public async get(day: Date): Promise<DailyCases> {
+  public async getByDate(day: Date): Promise<DailyCases> {
     if (!this.data) {
       this.data = await this.fetchData();
     }
@@ -19,9 +25,35 @@ export class DataService {
     return this.getDailyCases(day);
   }
 
+  public async getByInterval(
+    start: Date,
+    stop: Date
+  ): Promise<casesInInterval> {
+    if (!this.data) {
+      this.data = await this.fetchData();
+    }
+
+    return this.getIntervalCases(start, stop);
+  }
+
   private getDailyCases(date: Date): DailyCases {
     const result = this.data.find(byDate(date));
     return result ? result : new EmptyDay(date);
+  }
+
+  private getIntervalCases(start: Date, stop: Date): casesInInterval {
+    const interval = getDaysInInterval(start, stop, this.data);
+
+    if (interval.length === 0) {
+      return new EmptyInterval(start, stop, -1);
+    } else {
+      return interval.reduce((accumulator, { cases }) => {
+        for (let i = 0; i < accumulator.cases.length; i++) {
+          accumulator.cases[i].cases += cases[i].cases;
+        }
+        return accumulator;
+      }, new EmptyInterval(start, stop, 0));
+    }
   }
 
   private fetchData() {

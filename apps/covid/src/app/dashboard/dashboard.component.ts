@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
 import { ProvincesService } from './provinces/provinces.service';
 import { CasesService } from './cases/cases.service';
-import { DailyCases } from './types/data.types';
+import { DailyCases } from '@covid-app/types';
 
 const dateOfFirstCase = new Date(2020, 2, 4);
 
 @Component({
-  selector: 'app-dashboard',
+  selector: 'covid-app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['dashboard.component.scss'],
 })

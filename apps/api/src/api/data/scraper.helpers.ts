@@ -1,4 +1,9 @@
 export class Scraper {
+  private readonly tableRegex = /<table class="wikitable mw-collapsible".*?<\/table>/s;
+  private readonly rowsInHeader = 3;
+  private readonly rowsInFooter = 3;
+  private readonly numberOfProvinces = 16;
+
   constructor(private htmlPage: string) {}
 
   do() {
@@ -10,7 +15,6 @@ export class Scraper {
     return data;
   }
 
-  private readonly tableRegex = /<table class="wikitable mw-collapsible".*?<\/table>/s;
   private extractTable(data: string): string {
     return data.match(this.tableRegex)[0];
   }
@@ -19,27 +23,24 @@ export class Scraper {
     return table.split('<tr>');
   }
 
-  private readonly rowsInHeader = 3;
-  private readonly rowsInFooter = 3;
   private extractTableBody(rows: string[]): string[] {
     return rows.slice(this.rowsInHeader + 1, -this.rowsInFooter);
   }
 
-  private readonly numberOfProvinces = 16;
   private extractData(data: string[]): [Date[], string[][]] {
     const days: Date[] = [];
     const casesTable: string[][] = FilledTableFactory(
       this.numberOfProvinces,
       data.length,
-      '',
+      ''
     );
 
-    for (let [key, row] of Object.entries(data)) {
+    for (const [key, row] of Object.entries(data)) {
       const rowIndex = Number(key);
       const cells = row.split('<td');
 
-      for (let [key, cell] of Object.entries(cells)) {
-        let columnIndex = Number(key);
+      for (const [indexKey, cell] of Object.entries(cells)) {
+        let columnIndex = Number(indexKey);
 
         if (isSummaryColumn(columnIndex)) {
           continue;
@@ -50,7 +51,7 @@ export class Scraper {
           columnIndex = getIndexOfFirstEmptyColumn(
             casesTable[rowIndex],
             columnIndex,
-            this.numberOfProvinces,
+            this.numberOfProvinces
           );
 
           const cases = getCases(cell);
@@ -63,7 +64,7 @@ export class Scraper {
               rowIndex,
               columnIndex,
               Number(rowspan),
-              cases,
+              cases
             );
           }
         }
@@ -119,15 +120,20 @@ const dateRegex = /(\d\d)\.(\d\d)/;
 const year = 2020;
 function extractDate(cell: string): Date {
   const [, day, month] = cell.match(dateRegex);
-  return new Date(year, Number(month) - 1, Number(day));
+  return new Date(
+    Number(year),
+    Number(month) - 1,
+    Number(day),
+    Number(process.env.TIMEZONE)
+  );
 }
 
 function getIndexOfFirstEmptyColumn(
   casesTableRow: string[],
   index: number,
-  limit: number,
+  limit: number
 ): number {
-  while (casesTableRow[index] != '' && index < limit) {
+  while (casesTableRow[index] !== '' && index < limit) {
     index += 1;
   }
   return index;
@@ -149,7 +155,7 @@ function fillNextNCellsInColumn<T>(
   startRow: number,
   column: number,
   count: number,
-  value: T,
+  value: T
 ) {
   for (let i = 1; i < count; i++) {
     table[startRow + i][column] = value;
