@@ -5,7 +5,7 @@ import { toDate, toString } from '../helpers/date.helpers';
 @Component({
   selector: 'covid-app-interval-route',
   templateUrl: './interval-route.component.html',
-  styleUrls: ['./interval-route.component.css'],
+  styleUrls: ['./interval-route.component.scss'],
 })
 export class IntervalRouteComponent implements OnInit {
   start: Date;

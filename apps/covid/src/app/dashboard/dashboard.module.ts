@@ -16,8 +16,7 @@ import { TranslateHorizontallyDirective } from './tooltip/translate-horizontally
 import { AppRoutingModule } from './app-routing.module';
 import { DateRouteComponent } from './date-route/date-route.component';
 import { IntervalRouteComponent } from './interval-route/interval-route.component';
-import { TitleComponent } from './title/title.component';
-import { RangeTitleComponent } from './range-title/range-title.component';
+import { ToggleComponent } from './toggle/toggle.component';
 
 @NgModule({
   declarations: [
@@ -28,8 +27,7 @@ import { RangeTitleComponent } from './range-title/range-title.component';
     TranslateHorizontallyDirective,
     DateRouteComponent,
     IntervalRouteComponent,
-    TitleComponent,
-    RangeTitleComponent,
+    ToggleComponent,
   ],
   imports: [BrowserModule, HttpClientModule, AppRoutingModule],
   exports: [DashboardComponent],

@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { RangeTitleComponent } from './range-title.component';
+import { ToggleComponent } from './toggle.component';
 
-describe('RangeTitleComponent', () => {
-  let component: RangeTitleComponent;
-  let fixture: ComponentFixture<RangeTitleComponent>;
+describe('ToggleComponent', () => {
+  let component: ToggleComponent;
+  let fixture: ComponentFixture<ToggleComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ RangeTitleComponent ]
+      declarations: [ ToggleComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(RangeTitleComponent);
+    fixture = TestBed.createComponent(ToggleComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
