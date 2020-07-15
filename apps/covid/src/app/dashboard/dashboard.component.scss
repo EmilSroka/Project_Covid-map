@@ -18,6 +18,12 @@
   @media (min-width: 600px) {
     font-size: 2rem;
   }
+
+  &.title--small {
+    @media (min-width: 600px) {
+      font-size: 1.6rem;
+    }
+  }
 }
 
 .map {

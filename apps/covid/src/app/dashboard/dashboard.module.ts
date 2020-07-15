@@ -13,6 +13,11 @@ import { CasesService } from './cases/cases.service';
 import { DatePickerComponent } from './date-picker/date-picker.component';
 import { TooltipComponent } from './tooltip/tooltip.component';
 import { TranslateHorizontallyDirective } from './tooltip/translate-horizontally.directive';
+import { AppRoutingModule } from './app-routing.module';
+import { DateRouteComponent } from './date-route/date-route.component';
+import { IntervalRouteComponent } from './interval-route/interval-route.component';
+import { TitleComponent } from './title/title.component';
+import { RangeTitleComponent } from './range-title/range-title.component';
 
 @NgModule({
   declarations: [
@@ -21,8 +26,12 @@ import { TranslateHorizontallyDirective } from './tooltip/translate-horizontally
     DatePickerComponent,
     TooltipComponent,
     TranslateHorizontallyDirective,
+    DateRouteComponent,
+    IntervalRouteComponent,
+    TitleComponent,
+    RangeTitleComponent,
   ],
-  imports: [BrowserModule, HttpClientModule],
+  imports: [BrowserModule, HttpClientModule, AppRoutingModule],
   exports: [DashboardComponent],
   providers: [ProvincesService, CasesService],
 })

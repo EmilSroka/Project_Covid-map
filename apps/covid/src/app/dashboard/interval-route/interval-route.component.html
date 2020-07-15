@@ -1,0 +1,14 @@
+<form class="wrapper">
+  <covid-app-date-picker
+    label="Pick first day"
+    [currentDate]="start"
+    [maxDate]="getMaxLimit()"
+    (dateChange)="updateFirstRouteParam($event)"
+  ></covid-app-date-picker>
+  <covid-app-date-picker
+    label="Pick last day"
+    [currentDate]="stop"
+    [minDate]="getMinLimit()"
+    (dateChange)="updateSecondRouteParam($event)"
+  ></covid-app-date-picker>
+</form>

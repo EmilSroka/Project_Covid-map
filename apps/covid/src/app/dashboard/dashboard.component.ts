@@ -1,7 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ProvincesService } from './provinces/provinces.service';
 import { CasesService } from './cases/cases.service';
-import { DailyCases } from '@covid-app/types';
+import { Cases } from '@covid-app/types';
+import { Router, RoutesRecognized } from '@angular/router';
+import { toDate } from './helpers/date.helpers';
 
 const dateOfFirstCase = new Date(2020, 2, 4);
 
@@ -10,31 +12,63 @@ const dateOfFirstCase = new Date(2020, 2, 4);
   templateUrl: './dashboard.component.html',
   styleUrls: ['dashboard.component.scss'],
 })
-export class DashboardComponent {
+export class DashboardComponent implements OnInit {
   public isErrorMessage = false;
-  public date = dateOfFirstCase;
+  public date: Date = dateOfFirstCase;
+  public startDate: Date;
+  public stopDate: Date;
   public provinces = [];
   public cases = [];
 
   constructor(
     public provincesService: ProvincesService,
-    public casesService: CasesService
+    public casesService: CasesService,
+    private router: Router
   ) {
-    this.updateData(this.date);
-
     this.provinces = this.provincesService.getProvinces();
   }
 
+  ngOnInit(): void {
+    this.router.events.subscribe((val) => {
+      if (val instanceof RoutesRecognized) {
+        if (val.state.root.firstChild.url[0].path === 'date') {
+          this.date = toDate(val.state.root.firstChild.params.day);
+          this.startDate = null;
+          this.stopDate = null;
+          this.cases = [];
+          this.updateData(this.date);
+        } else {
+          this.date = null;
+          this.startDate = toDate(val.state.root.firstChild.params.start);
+          this.stopDate = toDate(val.state.root.firstChild.params.stop);
+          this.cases = [];
+          this.updateInterval(this.startDate, this.stopDate);
+        }
+      }
+    });
+  }
+
   updateData(newDate: Date): void {
-    this.casesService.getCases(newDate).subscribe(
-      ({ cases, date }: DailyCases) => {
+    this.casesService.getCasesByDay(newDate).subscribe(
+      (cases: Cases[]) => {
         this.cases = cases;
-        this.date = new Date(date);
         this.isErrorMessage = false;
       },
-      ({ cases, date }: DailyCases) => {
+      (cases: Cases[]) => {
         this.cases = cases;
-        this.date = new Date(date);
+        this.isErrorMessage = true;
+      }
+    );
+  }
+
+  updateInterval(start: Date, stop: Date): void {
+    this.casesService.getCasesByInterval(start, stop).subscribe(
+      (cases: Cases[]) => {
+        this.cases = cases;
+        this.isErrorMessage = false;
+      },
+      (cases: Cases[]) => {
+        this.cases = cases;
         this.isErrorMessage = true;
       }
     );

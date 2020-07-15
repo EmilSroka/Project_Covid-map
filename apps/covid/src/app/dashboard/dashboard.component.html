@@ -1,16 +1,28 @@
 <div class="container">
   <p *ngIf="isErrorMessage" class="error">No response from backend.</p>
-  <h1 class="title" id="title">
+  <h1 *ngIf="this.date" class="title" id="title">
     Coronavirus cases in Poland on {{ date | date: 'dd.MM.yyyy' }}
   </h1>
+  <h1
+    *ngIf="this.startDate && this.stopDate"
+    class="title title--small"
+    id="title"
+  >
+    Coronavirus cases in Poland from {{ startDate | date: 'dd.MM.yyyy' }} to
+    {{ stopDate | date: 'dd.MM.yyyy' }}
+  </h1>
+
   <covid-app-map
     [provinces]="provinces"
     [casesInProvinces]="cases"
     class="map"
     titleID="title"
   ></covid-app-map>
-  <covid-app-date-picker
-    [currentDate]="date"
-    (dateChange)="updateData($event)"
-  ></covid-app-date-picker>
+
+  <a routerLink="/date/04-02-2020">Pick by date</a>
+  <a routerLink="/interval/04-02-2020/29-06-2020">Pick by interval</a>
+  <br />
+  <br />
+
+  <router-outlet></router-outlet>
 </div>
