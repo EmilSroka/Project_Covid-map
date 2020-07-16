@@ -44,6 +44,9 @@
     },
     "types": {
       "tags": []
+    },
+    "helpers": {
+      "tags": []
     }
   }
 }
