@@ -1,0 +1,18 @@
+.dashboard__title {
+  text-align: center;
+  font-family: 'Lato', sans-serif;
+  margin-bottom: 24px;
+  margin-top: 4px;
+  font-size: 21px;
+
+  @media (min-width: 600px) {
+    font-size: 30px;
+  }
+
+  &--small {
+    @media (min-width: 600px) {
+      padding-top: 8px;
+      font-size: 22px;
+    }
+  }
+}

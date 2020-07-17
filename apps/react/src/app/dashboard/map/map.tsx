@@ -22,10 +22,16 @@ export interface MapProps {
 
 export const Map: React.FC<MapProps> = ({ cases, titleID, provinces }) => {
   const [maxCases, setMaxCases] = useState(0);
+  const [isTooltipActive, setIsTooltipActive] = useState(false);
   const [Tooltip, setTooltipState] = useTooltip(['', { x: 0, y: 0 }, false]);
 
   const svgRootEl = useRef(null);
   const isMouseOver = useRef(false);
+  const casesRef = useRef([]);
+  const provincesRef = useRef([]);
+
+  casesRef.current = cases;
+  provincesRef.current = provinces;
 
   useEffect(() => {
     setMaxCases(getMaxCases(cases));
@@ -38,14 +44,17 @@ export const Map: React.FC<MapProps> = ({ cases, titleID, provinces }) => {
         filter(() => isMouseOver.current)
       )
       .subscribe((e) => {
-        setTooltipState(calcTooltipState(e, provinces, cases));
+        setTooltipState(
+          calcTooltipState(e, provincesRef.current, casesRef.current)
+        );
+        setIsTooltipActive(true);
       });
 
     return () => event.unsubscribe();
   }, []);
 
   return (
-    <div>
+    <div className="map__wrapper">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 612.75696 577.23169"
@@ -56,7 +65,12 @@ export const Map: React.FC<MapProps> = ({ cases, titleID, provinces }) => {
         ref={svgRootEl}
         onMouseOver={() => (isMouseOver.current = true)}
         onMouseOut={() => (isMouseOver.current = false)}
-        onMouseMove={() => setTooltipState(['', { x: 0, y: 0 }, false])}
+        onMouseMove={() =>
+          isTooltipActive
+            ? (setTooltipState(['', { x: 0, y: 0 }, false]),
+              setIsTooltipActive(false))
+            : null
+        }
       >
         <desc id="map-description">
           COVID-19 cases in provinces on given date

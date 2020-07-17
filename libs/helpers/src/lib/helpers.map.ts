@@ -5,6 +5,7 @@ export function getByID<T extends { id: string }>(
   array: T[]
 ): T {
   const areIDsEqual = ({ id }: T) => id === targetID;
+  if (!array) return undefined;
   return array.find(areIDsEqual);
 }
 

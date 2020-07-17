@@ -47,6 +47,9 @@
     },
     "helpers": {
       "tags": []
+    },
+    "consts": {
+      "tags": []
     }
   }
 }
