@@ -1,4 +1,5 @@
 import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
+import {} from '@covid-app/helpers';
 
 @Component({
   selector: 'covid-app-date-picker',
@@ -15,12 +16,6 @@ export class DatePickerComponent implements OnInit {
   constructor() {}
 
   ngOnInit(): void {}
-
-  getFormattedDate(): string {
-    return `${this.currentDate.getFullYear()}-${
-      this.currentDate.getMonth() + 1
-    }-${this.currentDate.getDay()}`;
-  }
 
   changeDate(date: string): void {
     this.dateChange.emit(new Date(date));

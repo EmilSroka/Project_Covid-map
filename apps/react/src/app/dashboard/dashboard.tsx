@@ -2,14 +2,23 @@ import React from 'react';
 import Map from './map/map';
 
 import './dashboard.scss';
+import { Route, Switch, Redirect } from 'react-router-dom';
+import DateRoute from './date-route/date-route';
+import IntervalRoute from './interval-route/interval-route';
 
-/* eslint-disable-next-line */
-export interface DashboardProps {}
-
-export const Dashboard = (props: DashboardProps) => {
+export const Dashboard = () => {
   return (
     <div>
       <Map provinces={tmpProvinces} titleID={tmpTitleID} cases={tmpData}></Map>
+      <Switch>
+        <Route exact path="/date/:date" component={DateRoute}></Route>
+        <Route
+          exact
+          path="/interval/:startDate/:stopDate"
+          component={IntervalRoute}
+        ></Route>
+        <Redirect from="/" to="/date/04-03-2020" />
+      </Switch>
     </div>
   );
 };

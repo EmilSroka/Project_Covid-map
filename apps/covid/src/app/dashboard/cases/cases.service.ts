@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from './../../../environments/environment';
-import { toString } from '../helpers/date.helpers';
+import { dateToDateString } from '@covid-app/helpers';
 
 import { Observable, of } from 'rxjs';
 import { catchError, pluck } from 'rxjs/operators';
@@ -23,7 +23,7 @@ export class CasesService {
   }
 
   private getApiDayUrl(date: Date): string {
-    return `${environment.api}/day/${toString(date)}/`;
+    return `${environment.api}/day/${dateToDateString(date)}/`;
   }
 
   public getCasesByInterval(start: Date, stop: Date): Observable<Cases[]> {
@@ -38,7 +38,9 @@ export class CasesService {
   }
 
   private getApiIntervalUrl(start: Date, stop: Date): string {
-    return `${environment.api}/interval/${toString(start)}/${toString(stop)}/`;
+    return `${environment.api}/interval/${dateToDateString(
+      start
+    )}/${dateToDateString(stop)}/`;
   }
 }
 

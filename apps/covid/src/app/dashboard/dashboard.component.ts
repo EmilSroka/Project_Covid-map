@@ -3,7 +3,7 @@ import { ProvincesService } from './provinces/provinces.service';
 import { CasesService } from './cases/cases.service';
 import { Cases } from '@covid-app/types';
 import { Router, RoutesRecognized } from '@angular/router';
-import { toDate } from './helpers/date.helpers';
+import { dateStringToDate } from '@covid-app/helpers';
 
 const dateOfFirstCase = new Date(2020, 2, 4);
 
@@ -32,15 +32,19 @@ export class DashboardComponent implements OnInit {
     this.router.events.subscribe((val) => {
       if (val instanceof RoutesRecognized) {
         if (val.state.root.firstChild.url[0].path === 'date') {
-          this.date = toDate(val.state.root.firstChild.params.day);
+          this.date = dateStringToDate(val.state.root.firstChild.params.day);
           this.startDate = null;
           this.stopDate = null;
           this.cases = [];
           this.updateData(this.date);
         } else {
           this.date = null;
-          this.startDate = toDate(val.state.root.firstChild.params.start);
-          this.stopDate = toDate(val.state.root.firstChild.params.stop);
+          this.startDate = dateStringToDate(
+            val.state.root.firstChild.params.start
+          );
+          this.stopDate = dateStringToDate(
+            val.state.root.firstChild.params.stop
+          );
           this.cases = [];
           this.updateInterval(this.startDate, this.stopDate);
         }

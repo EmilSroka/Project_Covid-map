@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { toDate, toString } from '../helpers/date.helpers';
+import { dateStringToDate, dateToDateString } from '@covid-app/helpers';
 
 @Component({
   selector: 'covid-app-date-route',
@@ -13,11 +13,11 @@ export class DateRouteComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.paramMap.subscribe((params) => {
-      this.day = toDate(params.get('day'));
+      this.day = dateStringToDate(params.get('day'));
     });
   }
 
   updateRoute(date: Date) {
-    this.router.navigate(['/date/', toString(date)]);
+    this.router.navigate(['/date/', dateToDateString(date)]);
   }
 }
