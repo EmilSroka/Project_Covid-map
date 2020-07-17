@@ -79,6 +79,7 @@ export const Map: React.FC<MapProps> = ({ cases, titleID, provinces }) => {
           {provinces.map(({ borders, id, name }) => (
             <path
               key={id}
+              className="map__path"
               role="listitem"
               d={borders}
               id={id}

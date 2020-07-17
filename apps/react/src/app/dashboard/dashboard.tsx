@@ -8,12 +8,15 @@ import IntervalRoute from './interval-route/interval-route';
 import Title from './title/title';
 import { getProvinces } from './requests/provinces';
 import { getCases } from './requests/cases';
+import Toggle from './toggle/toggle';
 
 export const Dashboard = () => {
   const { startDate, stopDate, date } = useParams();
   const [provinces, setProvinces] = useState([]);
   const [cases, setCases] = useState([]);
   const [isRequestError, setIsRequestError] = useState(false);
+
+  console.log('RERENDER !!!');
 
   useEffect(() => {
     getCases().then((newProvinces) => setProvinces(newProvinces));
@@ -32,6 +35,7 @@ export const Dashboard = () => {
       ) : null}
       <Title startDate={startDate} stopDate={stopDate} date={date}></Title>
       <Map provinces={provinces} titleID="dashboard__title" cases={cases}></Map>
+      <Toggle option={date ? 0 : 1}></Toggle>
       <Switch>
         <Route exact path="/date/:date" component={DateRoute}></Route>
         <Route

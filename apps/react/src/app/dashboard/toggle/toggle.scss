@@ -1,4 +1,4 @@
-.wrapper {
+.toggle__wrapper {
   position: relative;
   display: flex;
   justify-content: space-between;
@@ -19,7 +19,7 @@
   }
 }
 
-.link {
+.toggle__link {
   z-index: 1;
 
   &:link {
@@ -38,7 +38,7 @@
   }
 }
 
-.indicator {
+.toggle__indicator {
   top: 0;
   left: 0;
   border-radius: 8px;
@@ -47,5 +47,5 @@
   height: 100%;
   position: absolute;
   background-color: hsla(355, 100%, 86%, 1);
-  transition: 0.3s ease-in-out left;
+  transition: 0.3s ease-in-out transform;
 }
