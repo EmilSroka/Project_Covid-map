@@ -1,9 +1,11 @@
-import React, { useState, useRef, useEffect, useReducer } from 'react';
+import React, { useState, useRef, useEffect, useReducer, useMemo } from 'react';
 import { Province, Cases } from '@covid-app/types';
 import {
   calculateColor,
   getMaxCases,
-  calcTooltipState,
+  calcTooltipStateFromMouseEvent,
+  getProvinceDescription,
+  calcTooltipStateFromFocusEvent,
 } from '@covid-app/helpers';
 import { fromEvent } from 'rxjs';
 import { filter, debounceTime } from 'rxjs/operators';
@@ -45,7 +47,11 @@ export const Map: React.FC<MapProps> = ({ cases, titleID, provinces }) => {
       )
       .subscribe((e) => {
         setTooltipState(
-          calcTooltipState(e, provincesRef.current, casesRef.current)
+          calcTooltipStateFromMouseEvent(
+            e,
+            provincesRef.current,
+            casesRef.current
+          )
         );
         setIsTooltipActive(true);
       });
@@ -78,6 +84,7 @@ export const Map: React.FC<MapProps> = ({ cases, titleID, provinces }) => {
         <g role="list">
           {provinces.map(({ borders, id, name }) => (
             <path
+              tabIndex={0}
               key={id}
               className="map__path"
               role="listitem"
@@ -85,7 +92,21 @@ export const Map: React.FC<MapProps> = ({ cases, titleID, provinces }) => {
               id={id}
               fill={calculateColor(hue, id, maxCases, cases)}
               stroke="black"
-              aria-label="TODO"
+              aria-label={getProvinceDescription(id, provinces, cases)}
+              onFocus={(e) => {
+                setTooltipState(
+                  calcTooltipStateFromFocusEvent(
+                    (e as unknown) as FocusEvent,
+                    provincesRef.current,
+                    casesRef.current
+                  )
+                );
+                setIsTooltipActive(true);
+              }}
+              onBlur={() => {
+                setTooltipState(['', { x: 0, y: 0 }, false]);
+                setIsTooltipActive(false);
+              }}
             ></path>
           ))}
         </g>

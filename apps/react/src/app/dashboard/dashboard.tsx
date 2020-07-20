@@ -9,14 +9,13 @@ import Title from './title/title';
 import { getProvinces } from './requests/provinces';
 import { getCases } from './requests/cases';
 import Toggle from './toggle/toggle';
+import { dateStringToDisplayString } from '@covid-app/helpers';
 
 export const Dashboard = () => {
   const { startDate, stopDate, date } = useParams();
   const [provinces, setProvinces] = useState([]);
   const [cases, setCases] = useState([]);
   const [isRequestError, setIsRequestError] = useState(false);
-
-  console.log('RERENDER !!!');
 
   useEffect(() => {
     getCases().then((newProvinces) => setProvinces(newProvinces));

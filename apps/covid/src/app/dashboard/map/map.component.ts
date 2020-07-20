@@ -13,6 +13,9 @@ import {
   getByID,
   calculateColor,
   getMaxCases,
+  calcTooltipStateFromMouseEvent,
+  calcTooltipStateFromFocusEvent,
+  getProvinceDescription,
 } from '@covid-app/helpers';
 import { Province, Cases } from '@covid-app/types';
 import { filter, debounceTime } from 'rxjs/operators';
@@ -62,7 +65,7 @@ export class MapComponent implements OnChanges, OnInit, OnDestroy {
 
   @HostListener('mousemove', ['$event'])
   onMouseMove(event: MouseEvent): void {
-    this.isTooltipVisible = false;
+    this.hideTooltip();
     this.mouseMove$.emit(event);
     event.stopPropagation();
   }
@@ -78,19 +81,34 @@ export class MapComponent implements OnChanges, OnInit, OnDestroy {
       this.tooltipContent,
       this.tooltipPosition,
       this.isTooltipVisible,
-    ] = calcTooltipState(event, this.provinces, this.casesInProvinces);
+    ] = calcTooltipStateFromMouseEvent(
+      event,
+      this.provinces,
+      this.casesInProvinces
+    );
   }
 
   getProvinceDescriptionByID(id: string): string {
-    const provinceName = getByID<Province>(id, this.provinces)?.name;
-    const provinceCases = getByID<Cases>(id, this.casesInProvinces)?.cases;
-
-    const casesInfo =
-      provinceCases === -1 ? 'no data' : `${provinceCases} cases`;
-    return `${provinceName}: ${casesInfo}`;
+    return getProvinceDescription(id, this.provinces, this.casesInProvinces);
   }
 
   updateMouseInfo(type: string) {
     this.isMouseOver = type === 'mouseover' ? true : false;
+  }
+
+  showTooltip(event: FocusEvent) {
+    [
+      this.tooltipContent,
+      this.tooltipPosition,
+      this.isTooltipVisible,
+    ] = calcTooltipStateFromFocusEvent(
+      event,
+      this.provinces,
+      this.casesInProvinces
+    );
+  }
+
+  hideTooltip() {
+    this.isTooltipVisible = false;
   }
 }

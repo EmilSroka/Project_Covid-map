@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import './date-picker.scss';
 
@@ -17,10 +17,18 @@ export const DatePicker: React.FC<DatePickerProps> = ({
   min,
   max,
 }) => {
+  const [isFocus, setIsFocus] = useState(false);
+
   return (
-    <label className="date-picker__wrapper">
+    <label
+      className={`date-picker__wrapper ${
+        isFocus ? 'date-picker__wrapper--focused' : null
+      } `}
+    >
       <div className="date-picker__label">{label}</div>
       <input
+        onFocus={() => setIsFocus(true)}
+        onBlur={() => setIsFocus(false)}
         className="date-picker__input"
         type="date"
         aria-label="Choose date"

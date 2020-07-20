@@ -3,14 +3,11 @@ import React from 'react';
 import './toggle.scss';
 import { Link } from 'react-router-dom';
 
-/* eslint-disable-next-line */
 export interface ToggleProps {
   option: number;
 }
 
 export const Toggle: React.FC<ToggleProps> = ({ option }) => {
-  console.log('rerender');
-
   return (
     <div className="toggle__wrapper">
       <div
@@ -20,10 +17,17 @@ export const Toggle: React.FC<ToggleProps> = ({ option }) => {
         }}
       ></div>
       <Link className="toggle__link" to="/date/04-03-2020">
-        Pick by date
+        <span tabIndex={-1} className="toggle__link__content">
+          Pick by date
+        </span>
       </Link>
-      <Link className="toggle__link" to="/interval/04-03-2020/29-06-2020">
-        Pick by interval
+      <Link
+        className="toggle__link toggle__link--right"
+        to="/interval/04-03-2020/29-06-2020"
+      >
+        <span tabIndex={-1} className="toggle__link__content">
+          Pick by interval
+        </span>
       </Link>
     </div>
   );

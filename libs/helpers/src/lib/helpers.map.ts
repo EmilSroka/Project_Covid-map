@@ -38,9 +38,15 @@ function calculateLightness(value: number, maxValue: number): number {
   return 50 + 50 * normalizedValue;
 }
 
+interface CoordinatesEvent {
+  target: HTMLElement;
+  clientX: number;
+  clientY: number;
+}
+
 const tooltipOffset = 30;
 export function calcTooltipState(
-  { target, clientX, clientY }: MouseEvent,
+  { target, clientX, clientY }: CoordinatesEvent,
   provinces: Province[],
   cases: Cases[]
 ): [string, { x: number; y: number }, boolean] {
@@ -61,6 +67,47 @@ export function calcTooltipState(
   ];
 }
 
+export function calcTooltipStateFromMouseEvent(
+  { target, clientX, clientY }: MouseEvent,
+  provinces: Province[],
+  cases: Cases[]
+) {
+  return calcTooltipState(
+    { target: target as HTMLElement, clientX, clientY },
+    provinces,
+    cases
+  );
+}
+
+export function calcTooltipStateFromFocusEvent(
+  { target }: FocusEvent,
+  provinces: Province[],
+  cases: Cases[]
+) {
+  const targetElement = target as HTMLElement;
+  const bounding = targetElement.getBoundingClientRect();
+  const clientX = bounding.left + bounding.width / 2;
+  const clientY = bounding.top + bounding.height / 2;
+
+  return calcTooltipState(
+    { target: targetElement, clientX, clientY },
+    provinces,
+    cases
+  );
+}
+
 function isProvince(target: EventTarget): boolean {
   return (target as HTMLElement).tagName === 'path';
+}
+
+export function getProvinceDescription(
+  id: string,
+  provinces: Province[],
+  cases: Cases[]
+): string {
+  const provinceName = getByID<Province>(id, provinces)?.name;
+  const provinceCases = getByID<Cases>(id, cases)?.cases;
+
+  const casesInfo = provinceCases === -1 ? 'no data' : `${provinceCases} cases`;
+  return `${provinceName}: ${casesInfo}`;
 }

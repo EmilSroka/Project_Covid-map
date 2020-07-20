@@ -13,6 +13,9 @@
   </desc>
   <g role="list">
     <path
+      [attr.tabindex]="0"
+      (focus)="showTooltip($event)"
+      (blur)="hideTooltip()"
       role="listitem"
       *ngFor="let province of provinces"
       [attr.d]="province.borders"

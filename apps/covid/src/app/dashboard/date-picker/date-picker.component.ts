@@ -13,11 +13,17 @@ export class DatePickerComponent implements OnInit {
   @Input() maxDate: Date | null = null;
   @Output() dateChange = new EventEmitter<Date>();
 
+  isFocusStyle = false;
+
   constructor() {}
 
   ngOnInit(): void {}
 
   changeDate(date: string): void {
     this.dateChange.emit(new Date(date));
+  }
+
+  setFocusStyleToWrapper(input: boolean): void {
+    this.isFocusStyle = input;
   }
 }
