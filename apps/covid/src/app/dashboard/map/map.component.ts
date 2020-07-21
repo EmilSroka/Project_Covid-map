@@ -9,8 +9,6 @@ import {
   OnDestroy,
 } from '@angular/core';
 import {
-  calcTooltipState,
-  getByID,
   calculateColor,
   getMaxCases,
   calcTooltipStateFromMouseEvent,
@@ -30,7 +28,6 @@ export class MapComponent implements OnChanges, OnInit, OnDestroy {
   @Input() provinces: Province[];
   @Input() casesInProvinces: Cases[];
   @Input() hue = 355;
-  @Input() titleID: string;
 
   private maxCases = 0;
 

@@ -1,18 +1,17 @@
 <div class="container">
   <p *ngIf="isErrorMessage" class="error">No response from backend.</p>
   <h1 *ngIf="date" class="title" id="title">
-    Coronavirus cases in Poland on {{ date | date: 'dd.MM.yyyy' }}
+    Coronavirus cases in Poland on {{ date | date: 'MM/dd/yyyy' }}
   </h1>
   <h1 *ngIf="startDate && stopDate" class="title title--small" id="title">
-    Coronavirus cases in Poland from {{ startDate | date: 'dd.MM.yyyy' }} to
-    {{ stopDate | date: 'dd.MM.yyyy' }}
+    Coronavirus cases in Poland from {{ startDate | date: 'MM/dd/yyyy' }} to
+    {{ stopDate | date: 'MM/dd/yyyy' }}
   </h1>
 
   <covid-app-map
     [provinces]="provinces"
     [casesInProvinces]="cases"
     class="map"
-    titleID="title"
   ></covid-app-map>
 
   <covid-app-toggle [position]="date ? 0 : 1"></covid-app-toggle>

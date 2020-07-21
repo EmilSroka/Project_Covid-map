@@ -22,7 +22,6 @@ describe('MapComponent', () => {
     de = fixture.debugElement;
 
     component.provinces = provincesInput;
-    component.titleID = titleIDInput;
     component.hue = hueInput;
     component.casesInProvinces = casesInput;
 
@@ -39,8 +38,7 @@ describe('MapComponent', () => {
     const g = de.query(By.css('g')).nativeElement;
     const paths = de.queryAll(By.css('path'));
 
-    expect(svg.getAttribute('aria-labelledby')).toBe(titleIDInput);
-    expect(svg.getAttribute('aria-describedby')).toBe(desc.id);
+    expect(svg.getAttribute('aria-labelledby')).toBe(desc.id);
     expect(svg.getAttribute('role')).toBe('group');
 
     expect(desc.innerHTML.length).toBeGreaterThan(0);
@@ -178,5 +176,3 @@ const provincesInput = [
 ];
 
 const hueInput = 200;
-
-const titleIDInput = '#title';

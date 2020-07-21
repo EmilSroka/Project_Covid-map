@@ -9,7 +9,6 @@ import Title from './title/title';
 import { getProvinces } from './requests/provinces';
 import { getCases } from './requests/cases';
 import Toggle from './toggle/toggle';
-import { dateStringToDisplayString } from '@covid-app/helpers';
 
 export const Dashboard = () => {
   const { startDate, stopDate, date } = useParams();
@@ -33,7 +32,7 @@ export const Dashboard = () => {
         <p className="dashboard__error-msg">No response from backend.</p>
       ) : null}
       <Title startDate={startDate} stopDate={stopDate} date={date}></Title>
-      <Map provinces={provinces} titleID="dashboard__title" cases={cases}></Map>
+      <Map provinces={provinces} cases={cases}></Map>
       <Toggle option={date ? 0 : 1}></Toggle>
       <Switch>
         <Route exact path="/date/:date" component={DateRoute}></Route>

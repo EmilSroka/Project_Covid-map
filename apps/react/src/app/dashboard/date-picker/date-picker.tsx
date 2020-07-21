@@ -31,7 +31,6 @@ export const DatePicker: React.FC<DatePickerProps> = ({
         onBlur={() => setIsFocus(false)}
         className="date-picker__input"
         type="date"
-        aria-label="Choose date"
         value={value}
         min={min ? min : null}
         max={max ? max : null}

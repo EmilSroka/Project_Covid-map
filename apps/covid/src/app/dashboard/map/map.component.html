@@ -3,17 +3,16 @@
   viewBox="0 0 612.75696 577.23169"
   class="svg-root"
   role="group"
-  [attr.aria-labelledby]="titleID"
-  aria-describedby="map-description"
+  aria-labelledby="map-description"
   (mouseover)="updateMouseInfo($event.type)"
   (mouseout)="updateMouseInfo($event.type)"
 >
   <desc id="map-description">
-    COVID-19 cases in provinces on given date
+    COVID-19 cases in provinces on given date or range
   </desc>
   <g role="list">
     <path
-      [attr.tabindex]="0"
+      attr.tabindex="0"
       (focus)="showTooltip($event)"
       (blur)="hideTooltip()"
       role="listitem"

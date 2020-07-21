@@ -17,12 +17,11 @@ const hue = 355;
 const tooltipTime = 1000;
 
 export interface MapProps {
-  titleID: string;
   provinces: Province[];
   cases: Cases[];
 }
 
-export const Map: React.FC<MapProps> = ({ cases, titleID, provinces }) => {
+export const Map: React.FC<MapProps> = ({ cases, provinces }) => {
   const [maxCases, setMaxCases] = useState(0);
   const [isTooltipActive, setIsTooltipActive] = useState(false);
   const [Tooltip, setTooltipState] = useTooltip(['', { x: 0, y: 0 }, false]);
@@ -66,8 +65,7 @@ export const Map: React.FC<MapProps> = ({ cases, titleID, provinces }) => {
         viewBox="0 0 612.75696 577.23169"
         className="svg-root"
         role="group"
-        aria-labelledby={titleID}
-        aria-describedby="map-description"
+        aria-labelledby="map__description"
         ref={svgRootEl}
         onMouseOver={() => (isMouseOver.current = true)}
         onMouseOut={() => (isMouseOver.current = false)}
@@ -78,10 +76,10 @@ export const Map: React.FC<MapProps> = ({ cases, titleID, provinces }) => {
             : null
         }
       >
-        <desc id="map-description">
+        <desc id="map__description">
           COVID-19 cases in provinces on given date
         </desc>
-        <g role="list">
+        <g role="map__list">
           {provinces.map(({ borders, id, name }) => (
             <path
               tabIndex={0}

@@ -24,7 +24,8 @@
   width: 50%;
   z-index: 1;
 
-  &.link-content {
+  & > .link-content {
+    display: block;
     height: 100%;
     width: 100%;
   }
@@ -45,12 +46,11 @@
   }
 
   &:focus > .link-content::after {
-    top: 0;
-    z-index: 100;
-    left: 0;
     content: '';
-    position: absolute;
     display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 50%;
     height: 100%;
     border-radius: 8px;

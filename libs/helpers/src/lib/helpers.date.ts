@@ -5,7 +5,7 @@ export function dateStringToDisplayString(date: string): string {
   const [, day, month, year] = date.match(dateStringRegex);
   const monthAsString = String(month).padStart(2, '0');
   const dayAsString = String(day).padStart(2, '0');
-  return `${dayAsString}.${monthAsString}.${year}`;
+  return `${monthAsString}/${dayAsString}/${year}`;
 }
 
 export function dateStringToFormString(date: string): string {
