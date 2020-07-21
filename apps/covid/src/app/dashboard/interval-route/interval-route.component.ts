@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { toDate, toString } from '../helpers/date.helpers';
+import { dateStringToDate, dateToDateString } from '@covid-app/helpers';
 
 @Component({
   selector: 'covid-app-interval-route',
@@ -15,8 +15,8 @@ export class IntervalRouteComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.paramMap.subscribe((params) => {
-      this.start = toDate(params.get('start'));
-      this.stop = toDate(params.get('stop'));
+      this.start = dateStringToDate(params.get('start'));
+      this.stop = dateStringToDate(params.get('stop'));
     });
   }
 
@@ -31,10 +31,18 @@ export class IntervalRouteComponent implements OnInit {
   }
 
   updateFirstRouteParam(date: Date) {
-    this.router.navigate(['/interval/', toString(date), toString(this.stop)]);
+    this.router.navigate([
+      '/interval/',
+      dateToDateString(date),
+      dateToDateString(this.stop),
+    ]);
   }
 
   updateSecondRouteParam(date: Date) {
-    this.router.navigate(['/interval/', toString(this.start), toString(date)]);
+    this.router.navigate([
+      '/interval/',
+      dateToDateString(this.start),
+      dateToDateString(date),
+    ]);
   }
 }

@@ -44,6 +44,12 @@
     },
     "types": {
       "tags": []
+    },
+    "helpers": {
+      "tags": []
+    },
+    "consts": {
+      "tags": []
     }
   }
 }

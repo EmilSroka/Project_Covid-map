@@ -1,0 +1,15 @@
+.dashboard__container {
+  max-width: 768px;
+  margin: 0 auto;
+  padding: 20px;
+  padding-top: 28px;
+  border-radius: 50px;
+  background: #ffffff;
+  box-shadow: 20px 20px 60px #d9d9d9, -20px -20px 60px #ffffff;
+}
+
+.dashboard__error-msg {
+  margin-bottom: 2px;
+  text-align: center;
+  color: red;
+}

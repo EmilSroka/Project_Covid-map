@@ -9,12 +9,14 @@ import {
   OnDestroy,
 } from '@angular/core';
 import {
-  max,
-  byID,
-  calculateLightness,
-  noDataForThisDay,
-  isProvince,
-} from './map.helpers';
+  calcTooltipState,
+  getByID,
+  calculateColor,
+  getMaxCases,
+  calcTooltipStateFromMouseEvent,
+  calcTooltipStateFromFocusEvent,
+  getProvinceDescription,
+} from '@covid-app/helpers';
 import { Province, Cases } from '@covid-app/types';
 import { filter, debounceTime } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
@@ -37,7 +39,6 @@ export class MapComponent implements OnChanges, OnInit, OnDestroy {
   public tooltipContent = '';
 
   readonly tooltipTime = 1000;
-  readonly tooltipOffset = 30;
 
   private mouseMove$ = new EventEmitter<MouseEvent>();
   private mouseMoveSubscription: Subscription;
@@ -58,16 +59,13 @@ export class MapComponent implements OnChanges, OnInit, OnDestroy {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.casesInProvinces) {
-      this.maxCases = this.casesInProvinces.reduce(
-        max,
-        this.casesInProvinces[0] ? this.casesInProvinces[0].cases : 0
-      );
+      this.maxCases = getMaxCases(this.casesInProvinces);
     }
   }
 
   @HostListener('mousemove', ['$event'])
   onMouseMove(event: MouseEvent): void {
-    this.isTooltipVisible = false;
+    this.hideTooltip();
     this.mouseMove$.emit(event);
     event.stopPropagation();
   }
@@ -75,40 +73,42 @@ export class MapComponent implements OnChanges, OnInit, OnDestroy {
   getColorByID(id: string): string {
     if (!this.casesInProvinces) return 'black';
 
-    const casesInProvince = this.casesInProvinces.find(byID(id))?.cases;
-
-    if (noDataForThisDay(casesInProvince)) return 'black';
-
-    const lightness = calculateLightness(casesInProvince, this.maxCases);
-    return `hsla(${Math.round(this.hue)},100%,${lightness}%,1)`;
+    return calculateColor(this.hue, id, this.maxCases, this.casesInProvinces);
   }
 
-  handleTooltip({ target, clientX, clientY }: MouseEvent): void {
-    if (!isProvince(target)) return;
-
-    const provinceID = (target as HTMLElement).getAttribute('id');
-    const provinceName = this.provinces.find(byID(provinceID))?.name;
-    const provinceCases = this.casesInProvinces.find(byID(provinceID))?.cases;
-    const casesInfo = provinceCases === -1 ? 'no data' : provinceCases;
-
-    this.tooltipContent = `${provinceName}: ${casesInfo}`;
-    this.tooltipPosition = {
-      x: clientX,
-      y: clientY + document.documentElement.scrollTop + this.tooltipOffset,
-    };
-    this.isTooltipVisible = true;
+  handleTooltip(event: MouseEvent): void {
+    [
+      this.tooltipContent,
+      this.tooltipPosition,
+      this.isTooltipVisible,
+    ] = calcTooltipStateFromMouseEvent(
+      event,
+      this.provinces,
+      this.casesInProvinces
+    );
   }
 
   getProvinceDescriptionByID(id: string): string {
-    const provinceName = this.provinces.find(byID(id))?.name;
-    const provinceCases = this.casesInProvinces.find(byID(id))?.cases;
-
-    const casesInfo =
-      provinceCases === -1 ? 'no data' : `${provinceCases} cases`;
-    return `${provinceName}: ${casesInfo}`;
+    return getProvinceDescription(id, this.provinces, this.casesInProvinces);
   }
 
   updateMouseInfo(type: string) {
     this.isMouseOver = type === 'mouseover' ? true : false;
+  }
+
+  showTooltip(event: FocusEvent) {
+    [
+      this.tooltipContent,
+      this.tooltipPosition,
+      this.isTooltipVisible,
+    ] = calcTooltipStateFromFocusEvent(
+      event,
+      this.provinces,
+      this.casesInProvinces
+    );
+  }
+
+  hideTooltip() {
+    this.isTooltipVisible = false;
   }
 }

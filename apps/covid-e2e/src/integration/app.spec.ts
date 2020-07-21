@@ -13,7 +13,7 @@ describe('covid', () => {
   });
 
   it('should display title', () => {
-    cy.contains('Coronavirus cases in Poland on');
+    cy.contains('Coronavirus cases in Poland');
   });
 
   it('should display map', () => {

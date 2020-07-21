@@ -1,12 +1,14 @@
 <div class="wrapper">
+  <a class="link" routerLink="/date/04-03-2020"
+    ><span tabindex="-1" class="link-content">Pick by date</span></a
+  >
+  <a class="link link-right" routerLink="/interval/04-03-2020/29-06-2020"
+    ><span tabindex="-1" class="link-content">Pick by interval</span></a
+  >
   <div
     class="indicator"
     [ngStyle]="{
-      left: position ? '50%' : '0'
+      transform: position ? 'translate(100%)' : 'translate(0)'
     }"
   ></div>
-  <a class="link" routerLink="/date/04-03-2020">Pick by date</a>
-  <a class="link" routerLink="/interval/04-03-2020/29-06-2020"
-    >Pick by interval</a
-  >
 </div>

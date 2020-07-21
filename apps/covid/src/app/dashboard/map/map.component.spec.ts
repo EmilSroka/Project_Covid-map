@@ -2,7 +2,6 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { MapComponent } from './map.component';
 import { TooltipComponent } from '../tooltip/tooltip.component';
-import { TranslateHorizontallyDirective } from '../tooltip/translate-horizontally.directive';
 import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
 
@@ -13,11 +12,7 @@ describe('MapComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        MapComponent,
-        TooltipComponent,
-        TranslateHorizontallyDirective,
-      ],
+      declarations: [MapComponent, TooltipComponent],
     }).compileComponents();
   }));
 

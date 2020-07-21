@@ -3,7 +3,9 @@ import { ProvincesService } from './provinces/provinces.service';
 import { CasesService } from './cases/cases.service';
 import { Cases } from '@covid-app/types';
 import { Router, RoutesRecognized } from '@angular/router';
-import { toDate } from './helpers/date.helpers';
+import { pathHandlerFactory } from './dashboard.helpers';
+import { Observer } from 'rxjs';
+import { filter } from 'rxjs/operators';
 
 const dateOfFirstCase = new Date(2020, 2, 4);
 
@@ -20,57 +22,37 @@ export class DashboardComponent implements OnInit {
   public provinces = [];
   public cases = [];
 
+  private readonly casesObserver: Observer<Cases[]> = {
+    next: (cases: Cases[]) => {
+      this.cases = cases;
+      this.isErrorMessage = false;
+    },
+    error: (cases: Cases[]) => {
+      this.cases = cases;
+      this.isErrorMessage = true;
+    },
+    complete: null,
+  };
+
   constructor(
     public provincesService: ProvincesService,
     public casesService: CasesService,
     private router: Router
-  ) {
-    this.provinces = this.provincesService.getProvinces();
-  }
+  ) {}
 
   ngOnInit(): void {
-    this.router.events.subscribe((val) => {
-      if (val instanceof RoutesRecognized) {
-        if (val.state.root.firstChild.url[0].path === 'date') {
-          this.date = toDate(val.state.root.firstChild.params.day);
-          this.startDate = null;
-          this.stopDate = null;
-          this.cases = [];
-          this.updateData(this.date);
-        } else {
-          this.date = null;
-          this.startDate = toDate(val.state.root.firstChild.params.start);
-          this.stopDate = toDate(val.state.root.firstChild.params.stop);
-          this.cases = [];
-          this.updateInterval(this.startDate, this.stopDate);
-        }
-      }
-    });
-  }
+    this.provincesService
+      .getProvinces()
+      .subscribe((provinces) => (this.provinces = provinces));
 
-  updateData(newDate: Date): void {
-    this.casesService.getCasesByDay(newDate).subscribe(
-      (cases: Cases[]) => {
-        this.cases = cases;
-        this.isErrorMessage = false;
-      },
-      (cases: Cases[]) => {
-        this.cases = cases;
-        this.isErrorMessage = true;
-      }
-    );
-  }
-
-  updateInterval(start: Date, stop: Date): void {
-    this.casesService.getCasesByInterval(start, stop).subscribe(
-      (cases: Cases[]) => {
-        this.cases = cases;
-        this.isErrorMessage = false;
-      },
-      (cases: Cases[]) => {
-        this.cases = cases;
-        this.isErrorMessage = true;
-      }
-    );
+    this.router.events
+      .pipe(filter((value) => value instanceof RoutesRecognized))
+      .subscribe((event: RoutesRecognized) => {
+        [this.date, this.startDate, this.stopDate] = pathHandlerFactory(event)(
+          this.casesService,
+          this.casesObserver
+        );
+        this.cases = [];
+      });
   }
 }
