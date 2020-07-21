@@ -1,14 +1,20 @@
-import { getGreeting } from '../support/app.po';
-
 describe('react', () => {
+  const pandemicStart = '2020-03-04';
   beforeEach(() => cy.visit('/'));
 
-  it('should display welcome message', () => {
-    // Custom command example, see `../support/commands.ts` file
-    // cy.login('my-email@something.com', 'myPassword');
+  it('should display title', () => {
+    cy.contains('Coronavirus cases in Poland on');
+  });
 
-    // Function helper example, see `../support/app.po.ts` file
-    // getGreeting().contains('Welcome to react!');
-    cy.contains('Coronavirus');
+  it('should display map', () => {
+    cy.get('.map__wrapper').should('exist');
+    cy.get('.map__wrapper').find('path');
+  });
+
+  it('should display date picker', () => {
+    cy.get('.date-picker__wrapper').should('exist');
+    cy.get('.date-picker__input').should('have.value', pandemicStart);
+    cy.get('.date-picker__input').type('2020-05-01');
+    cy.get('.date-picker__input').should('have.value', '2020-05-01');
   });
 });

@@ -1,7 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TooltipComponent } from './tooltip.component';
-import { TranslateHorizontallyDirective } from '../tooltip/translate-horizontally.directive';
 
 describe('TooltipComponent', () => {
   let component: TooltipComponent;
@@ -9,7 +8,7 @@ describe('TooltipComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [TooltipComponent, TranslateHorizontallyDirective],
+      declarations: [TooltipComponent],
     }).compileComponents();
   }));
 

@@ -22,8 +22,8 @@ export const DatePicker: React.FC<DatePickerProps> = ({
   return (
     <label
       className={`date-picker__wrapper ${
-        isFocus ? 'date-picker__wrapper--focused' : null
-      } `}
+        isFocus ? 'date-picker__wrapper--focused' : ''
+      }`}
     >
       <div className="date-picker__label">{label}</div>
       <input
